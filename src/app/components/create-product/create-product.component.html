@@ -1,0 +1,138 @@
+<div class="container small">
+  <h1>Creación de producto</h1>
+  <div class="row">
+    <div class="col col-25">
+      <label for="typeProduct">Tipo producto<span class="mandatory">*</span></label>
+    </div>
+    <div class="col col-75">
+      <select id="typeProduct" name="typeProduct" [(ngModel)]="typeProduct" [disabled]="showClientData"
+        (change)="setValidatorsTypeProduct()">
+        <option value="0">Seleccione...</option>
+        <option value="1">Cta Ahorros</option>
+        <option value="2">Cta Corriente</option>
+        <option value="3">CDT</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-25">
+      <label for="numIdentification">Identificación cliente<span class="mandatory">*</span></label>
+    </div>
+    <div class="col col-75">
+      <input type="text" id="numIdentification" placeholder="Ingrese número de identificación" autocomplete="off"
+        [(ngModel)]="numIdentification" [disabled]="showClientData" (keypress)="validateKey($event, '')">
+    </div>
+  </div>
+  <div class="row submit">
+    <input type="submit" value="Consultar" (click)="getClient()"
+      [disabled]="typeProduct == 0 || numIdentification == '' || showClientData">
+  </div>
+  <form [formGroup]="clientForm">
+    <ng-container *ngIf="showClientData">
+      <h4>Datos del cliente</h4>
+      <div class="row">
+        <div class="col col-25">
+          <label for="name">Nombre<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="name" placeholder="Ingrese nombres y apellidos" autocomplete="off"
+            formControlName="name" maxlength="100">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-25">
+          <label for="identificationType">Tipo identificación<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <select id="identificationType" formControlName="identificationType">
+            <option value="">Seleccione...</option>
+            <option value="1">Cédula</option>
+            <option value="2">Tarjeta de identidad</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="!clientExist">
+        <div class="col col-25">
+          <label for="isLegalRepresentative">¿Es cliente empresarial?</label>
+        </div>
+        <div class="col col-75">
+          <input type="checkbox" class="checkmark" [(ngModel)]="isLegalRepresentative"
+            (change)="setValidatorsLegalRepresentative()" formControlName="isLegalRepresentative">
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="isLegalRepresentative">
+      <h4 class="margin-t-60">Datos del representante legal</h4>
+      <div class="row">
+        <div class="col col-25">
+          <label for="nameRL">Nombre<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="nameRL" placeholder="Ingrese nombres y apellidos" autocomplete="off"
+            formControlName="nameRL" maxlength="50">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-25">
+          <label for="numIdentificationRL">Identificación<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="numIdentificationRL" placeholder="Ingrese número de identificación" autocomplete="off"
+            formControlName="numIdentificationRL" (keypress)="validateKey($event, '')" maxlength="20">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-25">
+          <label for="country">Pais<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <select id="country" formControlName="country" (change)="setValidatorCountry($event)">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let country of countries" [value]="country.idCountry">{{country.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-25">
+          <label for="phone">Celular<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="phone" placeholder="Ingrese celular" autocomplete="off" formControlName="phone">
+        </div>
+        <span class="mandatory" *ngIf="clientForm.controls.phone.invalid">Ingrese en el formato correspondiente al país
+          seleccionado</span>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="showClientData">
+      <h4 class="margin-t-60">Valores del producto</h4>
+      <div class="row">
+        <div class="col col-25">
+          <label for="balance">Monto<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="balance" placeholder="Ingrese monto" autocomplete="off" formControlName="balance"
+            (input)="formatCurrency($event.target)">
+        </div>
+      </div>
+      <div class="row" *ngIf="typeProduct == 3">
+        <div class="col col-25">
+          <label for="interestRate">Tasa de interes<span class="mandatory">*</span></label>
+        </div>
+        <div class="col col-75">
+          <input type="text" id="interestRate" placeholder="Ingrese tasa de interes" autocomplete="off"
+            formControlName="interestRate" (keypress)="validateKey($event, 'interestRate')">
+        </div>
+      </div>
+      <div class="row submit">
+        <input type="button" value="Crear" (click)="createProduct()"
+          [disabled]="clientForm.invalid || (typeProduct == 3 && clientForm.controls.balance.value == '$0')">
+      </div>
+    </ng-container>
+  </form>
+</div>
+
+<ngx-spinner size="medium" type="ball-circus" color="#F53503">
+  <p style="color: white">Cargando... </p>
+</ngx-spinner>

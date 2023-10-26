@@ -1,0 +1,9 @@
+<!--INICIO NAV-->
+<div class="top-nav">
+  <a (click)="goTo('')" [ngClass]="{'active': action === ''}">Home</a>
+  <a (click)="goTo('products')" [ngClass]="{'active': action === 'products'}">Productos</a>
+  <a (click)="goTo('createProduct')" [ngClass]="{'active': action === 'createProduct'}">Asignar producto</a>
+  <a (click)="goTo('depositWithdrawal')" [ngClass]="{'active': action === 'depositWithdrawal'}">Depositar / Retirar</a>
+  <a (click)="goTo('report')" [ngClass]="{'active': action === 'report'}">Reportes</a>
+</div>
+<!--FIN NAV-->

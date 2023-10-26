@@ -1,0 +1,54 @@
+<div class="container small">
+  <h1>Depositos y Retiros</h1>
+  <form [formGroup]="depositWithdralForm">
+    <div class="row">
+      <div class="col col-25">
+        <label for="action">Operación<span class="mandatory">*</span></label>
+      </div>
+      <div class="col col-75">
+        <select id="action" formControlName="action">
+          <option value="0" selected>Seleccione...</option>
+          <option value="1">Deposito</option>
+          <option value="2">Retiro</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-25">
+        <label for="typeProduct">Tipo producto<span class="mandatory">*</span></label>
+      </div>
+      <div class="col col-75">
+        <select id="typeProduct" name="typeProduct" formControlName="typeProduct">
+          <option value="0" selected>Seleccione...</option>
+          <option value="1">Cta Ahorros</option>
+          <option value="2">Cta Corriente</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-25">
+        <label for="numIdentification">Identificación cliente<span class="mandatory">*</span></label>
+      </div>
+      <div class="col col-75">
+        <input type="text" id="numIdentification" placeholder="Ingrese número de identificación" autocomplete="off"
+        formControlName="numIdentification">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-25">
+        <label for="amount">Monto<span class="mandatory">*</span></label>
+      </div>
+      <div class="col col-75">
+        <input type="text" id="amount" placeholder="Ingrese el valor" autocomplete="off"
+        formControlName="amount">
+      </div>
+    </div>
+    <div class="row submit">
+      <input type="submit" value="Confirmar" [disabled]="depositWithdralForm.invalid" (click)="createDepositOrWithdrawl()">
+    </div>
+  </form>
+</div>
+
+<ngx-spinner size="medium" type="ball-circus" color="#F53503">
+  <p style="color: white">Cargando... </p>
+</ngx-spinner>
